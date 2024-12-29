@@ -1,0 +1,37 @@
+\chapter{System Model}
+\label{chap:model}
+
+Put all figures in the directory of ``figure'' in the PDF format. Editable versions of
+the figures with the same filenames as their PDF versions should go into the directory of 
+``figure\_src'' for easy access.
+
+\section{System Model}
+In this paper, we consider a LEO satellite communication system. There are $N$ satellites denoted as $\mathcal{N} = \{n \mid n = 1, 2, \ldots, N\}$, and each satellite has $M$ beams denoted as $\mathcal{M} = \{m \mid m = 1, 2, \ldots, M\}$. Satellite beams serve $K$ cells on the ground denoted as $\mathcal{K} = \{k \mid k = 1, 2, \ldots, K\}$. A hexagonal grid of cells is considered.
+
+\subsection{Signal Model}
+In the LEO satellite system, the free space path loss defined by 3GPP protocol is as follows~\cite{38811}:
+\begin{equation}
+PL = 32.45 + 20\log_{10}(f_c) + 20\log_{10}(d),
+\end{equation}
+where $f_c$ is the carrier frequency and $d$ is the distance between the satellite and its serving cell position.
+Also, we introduce the antenna radiation pattern in~\cite{Energy-Efficient}:
+\begin{equation}
+G(\theta) = G_{max} \left[ \frac{J_1\left(\mu(\theta)\right)}{2\mu(\theta)} 
++ 36 \frac{J_3\left(\mu(\theta)\right)}{\mu(\theta)^3} \right]^2,
+\end{equation}
+where $\theta$ represents the angle between the user and the beam center with respect to the satellite, $G_{max}$ is the maximum antenna gain, $\mu(\theta) = 2.07123\cdot \sin(\theta)/\sin(\theta_{3dB})$, where $\theta_{3dB}$ is the 3 dB half-power beamwidth angle of the antenna, and $J_1(\cdot)$ and $J_3(\cdot)$ represent the Bessel functions of the first kind of orders 1 and 3.
+
+\begin{align*}
+\max_{\mathbf{P}, \mathbf{a}} \quad & R_{n,m,k}(t) \\
+\text{s.t.} \quad & \sum_{m \in \mathcal{M}} P_{n,m}(t) \leq P_{max}, \\
+& Q_{n,m,k}(t) \geq \delta, \quad \forall n \in \mathcal{N}, \forall m \in \mathcal{M}, \forall k \in \mathcal{K}, \\
+& Q_{\text{tot}}(t) \geq \delta, \\
+& C_n(t) \leq \rho, \quad \forall n \in \mathcal{N}, \\
+& \sum_{n \in \mathcal{N}} C_n(t) \leq \rho_t, \\
+& 0 \leq P_{n,m}(t) \leq P_{\text{beam}}, \quad \forall n \in \mathcal{N}, \forall m \in \mathcal{M}, \\
+& 0 \leq \sum_{m \in \mathcal{M}} P_{n,m}(t) \leq P_{\text{max}}, \quad \forall n \in \mathcal{N}.
+\end{align*}
+
+\section{Problem Formulation}
+
+\section{Satellite Ephemeris}
