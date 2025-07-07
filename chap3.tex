@@ -1,37 +1,74 @@
 \chapter{System Model}
 \label{chap:model}
 
-Put all figures in the directory of ``figure'' in the PDF format. Editable versions of
-the figures with the same filenames as their PDF versions should go into the directory of 
-``figure\_src'' for easy access.
+% Put all figures in the directory of ``figure'' in the PDF format. Editable versions of
+% the figures with the same filenames as their PDF versions should go into the directory of 
+% ``figure\_src'' for easy access.
 
 \section{System Model}
-In this paper, we consider a LEO satellite communication system. There are $N$ satellites denoted as $\mathcal{N} = \{n \mid n = 1, 2, \ldots, N\}$, and each satellite has $M$ beams denoted as $\mathcal{M} = \{m \mid m = 1, 2, \ldots, M\}$. Satellite beams serve $K$ cells on the ground denoted as $\mathcal{K} = \{k \mid k = 1, 2, \ldots, K\}$. A hexagonal grid of cells is considered.
+In this paper, we consider a LEO satellite communication system. 
+There are $N$ satellites denoted as $\mathcal{N} = \{n \mid n = 1, 2, \ldots, N\}$, and each satellite has $M$ beams denoted as $\mathcal{M} = \{m \mid m = 1, 2, \ldots, M\}$. 
+The coverage area covers $K$ cells on the ground denoted as $\mathcal{K} = \{k \mid k = 1, 2, \ldots, K\}$.
+There are $U$ user equipments (UEs) in the coverage area denoted as $\mathcal{U} = \{u \mid u = 1, 2, \ldots, U\}$. 
+A hexagonal grid of cells is considered. A quasi-earth-fixed cell scheme is considered.
 
-\subsection{Signal Model}
-In the LEO satellite system, the free space path loss defined by 3GPP protocol is as follows~\cite{38811}:qwereee
+\subsection{Channel Model}
+In the LEO satellite system, the free space path loss model can be express as follows~\cite{Satellite-Multi-Beam}:
 \begin{equation}
-PL = 32.45 + 20\log_{10}(f_c) + 20\log_{10}(d),
+    L_{n,u} = \left(\frac{\lambda}{4\pi d_{n,u}}\right)^2
 \end{equation}
-where $f_c$ is the carrier frequency and $d$ is the distance between the satellite and its serving cell position.
+where $\lambda$ is the wavelength,and d is the distance between the satellite n and the user u.
+% In the LEO satellite system, the free space path loss defined by 3GPP protocol is as follows~\cite{38811}:
+% \begin{equation}
+% PL = 32.45 + 20\log_{10}(f_c) + 20\log_{10}(d),
+% \end{equation}
+% where $f_c$ is the carrier frequency and $d$ is the distance between the satellite and its serving cell position.
 Also, we introduce the antenna radiation pattern in~\cite{Energy-Efficient}:
 \begin{equation}
 G(\theta) = G_{max} \left[ \frac{J_1\left(\mu(\theta)\right)}{2\mu(\theta)} 
 + 36 \frac{J_3\left(\mu(\theta)\right)}{\mu(\theta)^3} \right]^2,
 \end{equation}
-where $\theta$ represents the angle between the user and the beam center with respect to the satellite, $G_{max}$ is the maximum antenna gain, $\mu(\theta) = 2.07123\cdot \sin(\theta)/\sin(\theta_{3dB})$, where $\theta_{3dB}$ is the 3 dB half-power beamwidth angle of the antenna, and $J_1(\cdot)$ and $J_3(\cdot)$ represent the Bessel functions of the first kind of orders 1 and 3.
+where $\theta$ represents the angle between the user and the beam center with respect to the satellite, $G_{max}$ is the maximum antenna gain, $\mu(\theta) = 2.07123\cdot \sin(\theta)/\sin(\theta_{3dB})$, 
+where $\theta_{3dB}$ is the 3 dB half-power beamwidth angle of the antenna, and $J_1(\cdot)$ and $J_3(\cdot)$ represent the Bessel functions of the first kind of orders 1 and 3.
 
-\begin{align*}
-\max_{\mathbf{P}, \mathbf{a}} \quad & R_{n,m,k}(t) \\
-\text{s.t.} \quad & \sum_{m \in \mathcal{M}} P_{n,m}(t) \leq P_{max}, \\
-& Q_{n,m,k}(t) \geq \delta, \quad \forall n \in \mathcal{N}, \forall m \in \mathcal{M}, \forall k \in \mathcal{K}, \\
-& Q_{\text{tot}}(t) \geq \delta, \\
-& C_n(t) \leq \rho, \quad \forall n \in \mathcal{N}, \\
-& \sum_{n \in \mathcal{N}} C_n(t) \leq \rho_t, \\
-& 0 \leq P_{n,m}(t) \leq P_{\text{beam}}, \quad \forall n \in \mathcal{N}, \forall m \in \mathcal{M}, \\
-& 0 \leq \sum_{m \in \mathcal{M}} P_{n,m}(t) \leq P_{\text{max}}, \quad \forall n \in \mathcal{N}.
-\end{align*}
+And considering the rain fading effect, we introduce a raining fading factor follows the Gaussian distribution $r~\sim \mathcal{N}(\mu, \sigma)$, where $\mu$ and $\sigma$
+depends on the location, polarization, and elevation angle between UE and satellite~\cite{User-Scheduling}. 
+Also, considering the payload (PL) oscillator phase noise $n_{theta}$ at the n-th satellite that follows a Gaussian distribution with zero mean and standard deviation 0.24:
+\begin{equation}
+    \hat\theta_{n,u} = \theta_{n,u} + n_{theta}
+\end{equation}
+Thus, The received power from the beam m of satellite n to the user u is:
+\begin{equation}
+    \hat{P}_{n,m,u} = P_{n,m} \cdot L_{n,u} \cdot G(\hat\theta_{n,u}) \cdot r_{n,u}
+\end{equation}
 
 \section{Problem Formulation}
+Followed by 3GPP protocol~\cite{38331}, the supported SSB periodicity values are 
+\{20, 40, 80, 160\} miliseconds. Here we define the SSB periodicity of each cell:
+\begin{equation}
+    T_{SSB, k}\in\{20, 40, 80, 160\}, \forall k
+\end{equation}
+We define the time duration of each slot as 160ms. In Figure \ref{fig_SSB}, we illustrate how SSB periodicity affects the system: as the SSB periodicity increases, the amount of served cells from a single beam increases but the random access time duration will also increases. On the other hand, if the SSB periodicity decreases, the amount of served cells from a single beam decreases but the random access time duration will decreases.
 
-\section{Satellite Ephemeris}
+% We define $\delta_{n,m,k}$ as a beam scheduling indicator. If $\delta_{n,m,k}=1$, then the mth beam 
+% of the nth satellite serves the kth cell. Otherwise, $\delta_{n,m,k}=0$.
+
+We define the random access time duration $T_{RA,u}$ as the time from when UE start initial access to when it successfully detects the SSB signal. The initial access time of UE $u$ $T_{i,u}$follows the uniform distribution $T_{i,u}~\sim U[0, 160]$ in a time slot. The successful detection of SSB signal is defined as the received signal power from the UE $u$ is above the threshold power $P_{thres}$.
+
+
+In this thesis, we optimize the SSB periodicity for each cell to minimize the random access time duration, while maintaining a fixed power and beam count for each satellite.
+\begin{align*}
+    \min_{\mathcal{P}, \mathcal{T_{SSB}}} \quad & \sum_\mathcal{U} T_{RA,u} \\
+    \text{s.t.} \quad & \sum_m P_{n,m} \leq P_{total}, \forall n \in \mathcal{N}. \\
+    & T_{SSB, k}\in\{20, 40, 80, 160\}, \forall k
+    % & \sum_n\sum_m \delta_{n,m,k} \leq 1, \forall k \in \mathcal{K},\\
+    % & \sum \\
+    \end{align*}
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.8\textwidth]{SSB.png}
+        \caption{SSB in one time slot}
+        \label{fig_SSB}
+    \end{figure}
+    
+
