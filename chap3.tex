@@ -16,19 +16,30 @@ In this paper, we consider a LEO satellite communication system shown in Figure 
     \label{fig_sat}
 \end{figure}
 
-\subsection{Channel Model}
+\subsection{Free Space Path Loss}
 
 In the LEO satellite system, the free space path loss model can be express as follows~\cite{Satellite-Multi-Beam}:
 \begin{equation}
     L_{n,u} = \left(\frac{\lambda}{4\pi d_{n,u}}\right)^2
 \end{equation}
-where $\lambda$ is the wavelength,and d is the distance between the satellite n and the user u.
+where $\lambda$ is the wavelength,and $d$ is the distance between the $n$th satellite and the $u$th user.
+
+\subsection{Channel Model}
+
+The shadowed-Rician fading channel model is considered~\cite{channel-model}. Let $h_{n,k}$ denote the channel gain between the $n$th satellite and the $k$th cell. The cumulative distribution function (CDF) of the channel gain:
+\begin{equation}
+F_{h_{n,k}}(x) = K \sum_{n=0}^{\infty} \frac{(m)_n \, \delta^n \, (2b)^{1+n}}{(n!)^2} \, \gamma\left(1+n, \frac{x}{2b}\right)
+\end{equation}
+
+where $K = (2bm/(2bm+\Omega))^m/2b$, $\delta = \Omega/(2bm+\Omega)/2b$. $\Omega$ is the average power of LOS component, and $2b$ is the average power of the multi-path component except the LOS component. $m$ is the Nakagami parameter.
+
 % In the LEO satellite system, the free space path loss defined by 3GPP protocol is as follows~\cite{38811}:
 % \begin{equation}
 % PL = 32.45 + 20\log_{10}(f_c) + 20\log_{10}(d),
 % \end{equation}
 % where $f_c$ is the carrier frequency and $d$ is the distance between the satellite and its serving cell position.
-Also, we introduce the antenna radiation pattern in~\cite{Energy-Efficient}:
+\subsection{Antenna Radiation Pattern}
+We introduce the antenna radiation pattern in~\cite{Energy-Efficient}:
 \begin{equation}
 G(\theta) = G_{max} \left[ \frac{J_1\left(\mu(\theta)\right)}{2\mu(\theta)} 
 + 36 \frac{J_3\left(\mu(\theta)\right)}{\mu(\theta)^3} \right]^2,
@@ -36,12 +47,12 @@ G(\theta) = G_{max} \left[ \frac{J_1\left(\mu(\theta)\right)}{2\mu(\theta)}
 where $\theta$ represents the angle between the user and the beam center with respect to the satellite, $G_{max}$ is the maximum antenna gain, $\mu(\theta) = 2.07123\cdot \sin(\theta)/\sin(\theta_{3dB})$, 
 where $\theta_{3dB}$ is the 3 dB half-power beamwidth angle of the antenna, and $J_1(\cdot)$ and $J_3(\cdot)$ represent the Bessel functions of the first kind of orders 1 and 3.
 
-And considering the rain fading effect, we introduce a raining fading factor follows the Gaussian distribution $r~\sim \mathcal{N}(\mu, \sigma)$, where $\mu$ and $\sigma$
-depends on the location, polarization, and elevation angle between UE and satellite~\cite{User-Scheduling}. 
-Also, considering the payload (PL) oscillator phase noise $n_{theta}$ at the n-th satellite that follows a Gaussian distribution with zero mean and standard deviation 0.24:
-\begin{equation}
-    \hat\theta_{n,u} = \theta_{n,u} + n_{theta}
-\end{equation}
+% And considering the rain fading effect, we introduce a raining fading factor follows the Gaussian distribution $r~\sim \mathcal{N}(\mu, \sigma)$, where $\mu$ and $\sigma$
+% depends on the location, polarization, and elevation angle between UE and satellite~\cite{User-Scheduling}. 
+% Also, considering the payload (PL) oscillator phase noise $n_{theta}$ at the n-th satellite that follows a Gaussian distribution with zero mean and standard deviation 0.24:
+% \begin{equation}
+%     \hat\theta_{n,u} = \theta_{n,u} + n_{theta}
+% \end{equation}
 Thus, The received power from the beam m of satellite n to the user u is:
 \begin{equation}
     \hat{P}_{n,m,u} = P_{n,m} \cdot L_{n,u} \cdot G(\hat\theta_{n,u}) \cdot r_{n,u}
