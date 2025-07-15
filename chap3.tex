@@ -1,12 +1,10 @@
 \chapter{System Model}
 \label{chap:model}
 % system flow diagram
-% UE generation method
-% satellite beams to cells selection
 % satellite orbit pattern
+\section{System Overview}
 
-\section{LEO Satellite Communication System}
-This chapter introduces the LEO satellite communication system, as illustrated in Figure~\ref{fig_system}. There are $N$ satellites, denoted as $\mathcal{N} = \{n \mid n = 1, 2, \ldots, N\}$, and each satellite has $M$ beams, denoted as $\mathcal{M} = \{m \mid m = 1, 2, \ldots, M\}$. The coverage area consists of $K$ ground cells, denoted as $\mathcal{K} = \{k \mid k = 1, 2, \ldots, K\}$. There are $U$ user equipments (UEs) in the coverage area, denoted as $\mathcal{U} = \{u \mid u = 1, 2, \ldots, U\}$. A hexagonal grid of cells and the quasi-earth-fixed cell scheme are considered. For each satellite, 
+This chapter introduces the considered LEO satellite communication system, as illustrated in Figure~\ref{fig_system}. The network consists of $N$ satellites, denoted by $\mathcal{N} = \{n\ |\ n = 1, 2, \ldots, N\}$, where each satellite is equipped with $M$ beams, represented by $\mathcal{M} = \{m\ |\ m = 1, 2, \ldots, M\}$. The coverage area is partitioned into $K$ ground cells, $\mathcal{K} = \{k\ |\ k = 1, 2, \ldots, K\}$, and contains $U$ user equipments (UEs), indexed by $\mathcal{U} = \{u\ |\ u = 1, 2, \ldots, U\}$.
 
 \begin{figure}[h!]
     \centering
@@ -14,6 +12,18 @@ This chapter introduces the LEO satellite communication system, as illustrated i
     \caption{Illustration of satellite beams and cells.}
     \label{fig_system}
 \end{figure}
+
+In this thesis, we adopt the quasi-earth-fixed cell scheme. Unlike the earth-moving cell scheme—where the coverage areas of satellite beams move as the LEO satellites orbit—this approach directs satellite beams so that each beam consistently covers the same geographical cell for a given period. Thus, the coverage area of each satellite beam remains fixed relative to the ground during that interval. Throughout, we assume each satellite beam is oriented toward the center of its designated cell.
+
+For each satellite, power allocation is subject to a total power budget. Let $P_{n,m}[t]$ denote the transmitted power of the $m$-th beam from the $n$-th satellite at time slot $t$. The aggregate transmit power of all beams on any satellite must satisfy:
+\begin{equation}
+    \sum_{m} P_{n,m}[t] \leq P_s, \quad \forall n \in \mathcal{N}
+\end{equation}
+where $P_s$ is the maximum transmit power per satellite.
+
+To achieve optimal coverage and minimize overlap, all ground cells are arranged in a regular hexagonal grid, ensuring uniform cell size. Each cell is served by at most one satellite beam in any given time slot.
+
+The locations of UEs wishing to access the network are assigned randomly within their corresponding cells, and the population of each cell are generated according to area population density statistics.
 
 \section{Channel Model}
 
@@ -65,7 +75,7 @@ Let $\Delta_{n,m}[t]$ denote the set of cells served by the $m$-th beam of the $
 \section{UE Random Access Delay}
 The random access delay $T_u$ for the $u$-th UE is defined as the time duration between the start of SSB measurement and the successful reception of SSB, as shown in Figure~\ref{RAD}. $T_u$ can be decomposed into two parts: $T_u^i$ (initial waiting time) and $T_u^l$ (additional delay due to failed attempts). $T_u^i$ is the time from the start of SSB measurement to the arrival of the first SSB, and $T_u^l$ is the time from the first SSB arrival to the successful SSB reception.
 
-Since the UE can start SSB measurement at any time, $T_u^i$ is a uniformly distributed random variable $U(0, T_{k_u}^{SSB})$. $T_u^l$ is a multiple of $T_{k_u}^{SSB}$, depending on the number of failures $Q_u$. If the received SSB power $\hat{P}_{n, m, u}$ is less than the threshold $P_{th}$, the UE fails to measure SSB. The probability that the received SSB power is less than $P_{th}$ is denoted as $P_u^0$. The mathematical formulation is as follows:
+Since the UE can start SSB measurement at any time, $T_u^i$ is a uniformly distributed random variable $U(0, T_{k_u}^{SSB})$. $T_u^l$ is a multiple of $T_{k_u}^{SSB}$, depending on the number of failures $Q_u$. If the received SSB power $\hat{P}_{n, m, u}$ is less than the threshold $P_{th}$, the UE fails to measure SSB. The probability that the received SSB power is less than $P^{th}$ is denoted as $P_u^0$. The mathematical formulation is as follows:
 \begin{equation}
     T_u = T_u^i + T_u^l
 \end{equation}
@@ -103,10 +113,12 @@ This section formulates the optimization problem based on recent 3GPP standardiz
     & \quad \Delta_{n, m}[t] \cap \Delta_{n', m'}[t] = \emptyset, \quad \forall n, n' \in \mathcal{N}, m, m' \in \mathcal{M}, (n, m) \neq (n', m')
 \end{aligned}
 \end{equation}
-where $P_s$ is the maximum transmitted power for each satellite.
 
-\section*{List of Symbols}
+\section{List of Symbols}
 \begin{tabular}{ll}
+\hline
+\multicolumn{2}{l}{\textbf{Symbol}} \\
+\hline
 $N$ & Number of satellites \\
 $M$ & Number of beams per satellite \\
 $K$ & Number of cells on the ground \\
@@ -121,3 +133,4 @@ $P_s$ & Maximum transmitted power for each satellite \\
 $P_{th}$ & SSB reception threshold \\
 $Q_u$ & Number of failed SSB attempts for UE $u$ \\
 \end{tabular}
+
