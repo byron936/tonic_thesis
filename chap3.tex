@@ -63,7 +63,7 @@ This section describes the SSB periodicity settings based on 3GPP protocol and t
 
 The duration of each time slot is set to 160 ms. To simplify computational complexity, both the positions of satellites and UEs are assumed fixed within each time slot. The SSB periodicity specification for each cell remains unchanged throughout the slot.
 
-Let $\Delta_{n,m}[t]$ denote the set of cells served by the $m$-th beam of the $n$-th satellite at time slot $t$. Since the time duration of each slot is 160 ms and the SSB periodicity is 20, 40, 80, or 160 ms, the number of elements in $\Delta_{n,m}[t]$ must be 1, 2, 4, or 8, as shown in Figure~\ref{delta}.
+Let $\Delta_{n,m}[t]$ denote the set of cells served by the $m$-th beam of the $n$-th satellite at time slot $t$. Since the time duration of each slot is 160 ms and the SSB periodicity is 20, 40, 80, or 160 ms, the number of elements in $\Delta_{n,m}[t]$ must be 0, 1, 2, 4, or 8, as shown in Figure~\ref{delta}.
 
 \begin{figure}[h!]
     \centering
@@ -109,28 +109,28 @@ This section formulates the optimization problem based on recent 3GPP standardiz
     & \underset{\Delta, P_{n, m}}{\text{min}} \sum_{u \in \mathcal{U}} T_u \\
     & \text{subject to} \\
     & \quad \sum_{m} P_{n,m}[t] \leq P_s, \quad \forall n \in \mathcal{N} \\
-    & \quad \Delta_{n, m}[t] \in \{0, 1, 2, 4, 8\}, \quad \forall n \in \mathcal{N}, m \in \mathcal{M} \\
+    & \quad |\Delta_{n, m}[t]| \in \{0, 1, 2, 4, 8\}, \quad \forall n \in \mathcal{N}, m \in \mathcal{M} \\
     & \quad \Delta_{n, m}[t] \cap \Delta_{n', m'}[t] = \emptyset, \quad \forall n, n' \in \mathcal{N}, m, m' \in \mathcal{M}, (n, m) \neq (n', m')
 \end{aligned}
 \end{equation}
 
-\section{List of Symbols}
-\begin{tabular}{ll}
-\hline
-\multicolumn{2}{l}{\textbf{Symbol}} \\
-\hline
-$N$ & Number of satellites \\
-$M$ & Number of beams per satellite \\
-$K$ & Number of cells on the ground \\
-$U$ & Number of user equipments (UEs) \\
-$L_{n,k}$ & Free space path loss from satellite $n$ to cell $k$ \\
-$h_{n,k}$ & Channel gain between satellite $n$ and cell $k$ \\
-$G(\theta_{n,m,u})$ & Antenna gain for user $u$ \\
-$T^{SSB}_k$ & SSB periodicity of cell $k$ \\
-$T_u$ & Random access delay of UE $u$ \\
-$P_{n,m}$ & Transmitted power of satellite $n$'s $m$-th beam \\
-$P_s$ & Maximum transmitted power for each satellite \\
-$P_{th}$ & SSB reception threshold \\
-$Q_u$ & Number of failed SSB attempts for UE $u$ \\
-\end{tabular}
+% \section{List of Symbols}
+% \begin{tabular}{ll}
+% \hline
+% \multicolumn{2}{l}{\textbf{Symbol}} \\
+% \hline
+% $N$ & Number of satellites \\
+% $M$ & Number of beams per satellite \\
+% $K$ & Number of cells on the ground \\
+% $U$ & Number of user equipments (UEs) \\
+% $L_{n,k}$ & Free space path loss from satellite $n$ to cell $k$ \\
+% $h_{n,k}$ & Channel gain between satellite $n$ and cell $k$ \\
+% $G(\theta_{n,m,u})$ & Antenna gain for user $u$ \\
+% $T^{SSB}_k$ & SSB periodicity of cell $k$ \\
+% $T_u$ & Random access delay of UE $u$ \\
+% $P_{n,m}$ & Transmitted power of satellite $n$'s $m$-th beam \\
+% $P_s$ & Maximum transmitted power for each satellite \\
+% $P_{th}$ & SSB reception threshold \\
+% $Q_u$ & Number of failed SSB attempts for UE $u$ \\
+% \end{tabular}
 
