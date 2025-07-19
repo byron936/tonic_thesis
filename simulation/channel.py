@@ -1,7 +1,7 @@
 # channel.py
 import numpy as np
 from scipy.constants import c, pi
-from scipy.special import gamma, gammainc
+from scipy.special import gamma, gammainc, factorial
 from config import sat_height, carrier_freq, k_rician, md, ms
 
 def free_space_path_loss(sat_pos, cell_centers):
@@ -20,7 +20,7 @@ def shadowed_rician_cdf(x, m, Omega, b, n_max=30):
     sum_terms = 0.0
     for n in range(n_max + 1):
         poch = gamma(m + n) / gamma(m)
-        coeff = poch * (delta**n) * (two_b ** (1 + n)) / ((np.math.factorial(n))**2)
+        coeff = poch * (delta**n) * (two_b ** (1 + n)) / ((factorial(n))**2)
         term = coeff * gamma_lower(1 + n, x / two_b)
         sum_terms += term
     cdf = K * sum_terms

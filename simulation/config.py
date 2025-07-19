@@ -20,8 +20,14 @@ carrier_freq = 20e9
 k_rician = 2.4     # Rician K-factor
 md = 1.5           # Nakagami parameter for dominant
 ms = 1.5           # Nakagami parameter for scattered
+Omega = 2.0  # Average LoS power (can be adjusted based on scenario)
+b = 1.0      # Multipath average power (can be adjusted)
+threshold = 1.0  # Channel gain threshold used for outage probability
 
 # Antenna parameters (example TR 38.901, ref [6])
 Gmax = 30         # dBi (antenna gain peak, example value)
 theta_3db = np.deg2rad(7)   # 3 dB beamwidth in radians
+
+# Channel parameters
+
 
