@@ -8,5 +8,25 @@
 \section{LEO satellite network}
 
 \section{Random Access Procedure}
+\section{Synchronization Signal Block}
+\subsection{Components of SSB}
+The Synchronization Signal Block (SSB) in 5G New Radio (NR) is a critical structure for initial access between the user equipment (UE) and the base station (gNB). Each SSB is composed of three main elements:
+\begin{itemize}
+    \item Primary Synchronization Signal (PSS): The PSS enables the UE to obtain symbol timing and perform coarse frequency synchronization. It allows the UE to find the starting point of a radio frame and resolves the physical layer cell identity group.
+    \item Secondary Synchronization Signal (SSS): The SSS complements PSS by providing additional information to finalize the cell identification and determines the frame timing, which refines synchronization accuracy for the UE.
+    \item Physical Broadcast Channel (PBCH): The PBCH conveys essential cell-specific information, including system configuration parameters (such as the System Frame Number), which the UE needs for further connection setup after synchronization.
+\end{itemize}
+These components jointly allow the UE to perform downlink synchronization, cell identification, and to decode key system information for network access.
+
+\subsection{SSB Configuration}
+A series of SSBs called \textit{SSB burst} are sent in a half frame (5ms), the number of SSBs in a SSB burst is determined depends on the carrier frequency and the subcarrier spacing. A UE can be provided per serving cell by \textit{ssb-periodicityServingCell}, which is the periodicity of SSB in each serving cell. 
+
+\subsection{SSB in NTN}
+In terrestiral network (TN), the base station (gNB) transmits SSBs periodically in time and across different spatial directions through beam sweeping, enabling the UE to detect the strongest SSB and select the optimal beam for communication. In NTN, the SSBs do the same job but the coverage area of each satellite is much bigger than TN, that means each satellite has to provide more beams to ground. Moreover, the long distance from satellite to ground and the power budget of each satellite forces us to properly allocate the power of the SSB. Thus, it is essential for us to manage the SSB transmitted power and the periodicity of each cell.
+
+% The base station (gNB) transmits SSBs periodically in time and across different spatial directions through beam sweeping. Each SSB last for a half frame (5ms). A UE can be provided per serving cell by \emph{ssb-periodicityServingCell}, which is the periodicity of SSB in each serving cell. 
+
+% \subsection{}
+% A burst of SSBs covers various directions or beams, enabling the UE to detect the strongest SSB and select the optimal beam for communication. Upon reception, the UE measures the signal quality of the detected SSBs and chooses the best one for initiating the random access procedure.
 
 \section{Related Work}

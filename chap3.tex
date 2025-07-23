@@ -56,14 +56,16 @@ With the transmitted power $P_{n,m}$ from the $m$-th beam of the $n$-th satellit
 where $k$ is the cell where user $u$ is located.
 
 \section{Synchronization Signal Block Model}
-This section describes the SSB periodicity settings based on 3GPP protocol and their impact on system operation. According to 3GPP protocol~\cite{38331}, the supported synchronization signal block (SSB) periodicity values are $\{20, 40, 80, 160\}$ milliseconds. The SSB periodicity of each cell is defined as:
-\begin{equation}
-    T^{SSB}_{k} \in \{20, 40, 80, 160\}, \quad \forall k \in \mathcal{K}
-\end{equation}
+% This section describes the SSB periodicity settings based on 3GPP protocol and their impact on system operation. According to 3GPP protocol~\cite{38331}, the supported synchronization signal block (SSB) periodicity values are $\{20, 40, 80, 160\}$ milliseconds. The SSB periodicity of each cell is defined as:
+% \begin{equation}
+%     T^{SSB}_{k} \in \{20, 40, 80, 160\}, \quad \forall k \in \mathcal{K}
+% \end{equation}
+
+% TODO: periodicity should be in general form instead of typical value
 
 The duration of each time slot is set to 160 ms. To simplify computational complexity, both the positions of satellites and UEs are assumed fixed within each time slot. The SSB periodicity specification for each cell remains unchanged throughout the slot.
 
-Let $\Delta_{n,m}[t]$ denote the set of cells served by the $m$-th beam of the $n$-th satellite at time slot $t$. Since the time duration of each slot is 160 ms and the SSB periodicity is 20, 40, 80, or 160 ms, the number of elements in $\Delta_{n,m}[t]$ must be 0, 1, 2, 4, or 8, as shown in Figure~\ref{delta}.
+Let $S_{n,m}[t]$ denote the set of cells served by the $m$-th beam of the $n$-th satellite at time slot $t$. Since the time duration of each slot is 160 ms and the SSB periodicity is 20, 40, 80, or 160 ms, the number of elements in $S_{n,m}[t]$ must be 0, 1, 2, 4, or 8, as shown in Figure~\ref{delta}.
 
 \begin{figure}[h!]
     \centering
@@ -71,11 +73,12 @@ Let $\Delta_{n,m}[t]$ denote the set of cells served by the $m$-th beam of the $
     \caption{Illustration of SSB periodicity and cell patterns for different periodicity settings.}
     \label{delta}
 \end{figure}
+% TODO: modify the figure
 
 \section{UE Random Access Delay}
-The random access delay $T_u$ for the $u$-th UE is defined as the time duration between the start of SSB measurement and the successful reception of SSB, as shown in Figure~\ref{RAD}. $T_u$ can be decomposed into two parts: $T_u^i$ (initial waiting time) and $T_u^l$ (additional delay due to failed attempts). $T_u^i$ is the time from the start of SSB measurement to the arrival of the first SSB, and $T_u^l$ is the time from the first SSB arrival to the successful SSB reception.
+The random access delay $T_u$ for the $u$-th UE is a random variable, defined as the time duration between the start of SSB measurement and the successful reception of SSB, as shown in Figure~\ref{RAD}. $T_u$ can be decomposed into two parts: $T_u^i$ (initial waiting time) and $T_u^l$ (additional delay due to failed attempts). $T_u^i$ is a random variable that represents the time from the start of SSB measurement to the arrival of the first SSB, and $T_u^l$ is another random variable that represents the time from the first SSB arrival to the successful SSB reception.
 
-Since the UE can start SSB measurement at any time, $T_u^i$ is a uniformly distributed random variable $U(0, T_{k_u}^{SSB})$. $T_u^l$ is a multiple of $T_{k_u}^{SSB}$, depending on the number of failures $Q_u$. If the received SSB power $\hat{P}_{n, m, u}$ is less than the threshold $P_{th}$, the UE fails to measure SSB. The probability that the received SSB power is less than $P^{th}$ is denoted as $P_u^0$. The mathematical formulation is as follows:
+Since the UE can start SSB measurement at any time, $T_u^i$ is a uniformly distributed random variable $U(0, T_{k_u}^{SSB})$. $T_u^l$ is a multiple of $T_{k_u}^{SSB}$, depending on the number of failures $Q_u$. If the received SSB power $\hat{P}_{n, m, u}$ is less than the threshold $P^{th}$, the UE fails to measure SSB. The probability that the received SSB power is less than $P^{th}$ is denoted as $R_u^0$. The mathematical formulation is as follows:
 \begin{equation}
     T_u = T_u^i + T_u^l
 \end{equation}
@@ -93,7 +96,7 @@ Since the UE can start SSB measurement at any time, $T_u^i$ is a uniformly distr
 \begin{equation}
     \Pr\left[Q_u = n\right] = (1 - P_u^0) (P_u^0)^n
 \end{equation}
-where $k_u$ is the cell where the $u$-th UE is located.
+where $k_u$ is the cell where the $u$-th UE is located, and $F_{T_u^i}(t)$ is the CDF of $T_u^i$.
 
 \begin{figure}[h!]
     \centering
@@ -101,9 +104,11 @@ where $k_u$ is the cell where the $u$-th UE is located.
     \caption{Illustration of UE random access delay. $T_u$ is decomposed into $T_u^i$ (initial waiting time) and $T_u^l$ (additional delay due to failed attempts).}
     \label{RAD}
 \end{figure}
+% TODO: time slot vs. time instant, some variables have t and some don't
 
 \section{Problem Formulation}
 This section formulates the optimization problem based on recent 3GPP standardization discussions. In the 3GPP RAN1 \#116 meeting~\cite{ran1-116}, further specifications for the LEO satellite communication scenario were defined. The main challenge is to provide random access to a large number of cells with limited satellite power. Extending the SSB periodicity for some cells reduces satellite power consumption but increases UE random access delay. The transmitted SSB power also affects the success probability of the random access procedure. The trade-off among power allocation, SSB periodicity, and UE random access delay is modeled as follows:
+% TODO: reduce satellite power consumption???
 \begin{equation}
 \begin{aligned}
     & \underset{\Delta, P_{n, m}}{\text{min}} \sum_{u \in \mathcal{U}} T_u \\
